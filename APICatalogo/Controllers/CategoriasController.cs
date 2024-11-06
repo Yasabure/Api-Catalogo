@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
+using APICatalogo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -8,122 +9,78 @@ namespace APICatalogo.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CategoriasController : Controller
+    public class CategoriasController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _uof;
+        private readonly ILogger<CategoriasController> _logger;
 
-        public CategoriasController(AppDbContext context)
+        public CategoriasController(IUnitOfWork uof, ILogger<CategoriasController> logger)
         {
-            _context = context;
+            _uof = uof;
+            _logger = logger;
         }
+
         [HttpGet]
         public ActionResult<IEnumerable<Categoria>> Get()
         {
-            try
-            {
-                return _context.Categorias.Take(10).AsNoTracking().ToList(); // Take é utilizado para limitar quantas informações serão mostradas, afim de não sobrecarregar a aplicação
-
-            }
-            catch (Exception )
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
-            }
+            var categorias = _uof.CategoriaRepository.GetAll();
+            return Ok(categorias);
         }
-        [HttpGet("{ID:int}", Name = "ObterCategoria")]
+
+        [HttpGet("{id:int}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
-
-            try
-            {
-                var categoria = _context.Categorias.AsNoTracking().FirstOrDefault(p => p.CategoriaId == id);
-                if (categoria == null)
+            var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
+            if (categoria is null)
                 {
-                    return NotFound("Categoria não encontrada");
+                    _logger.LogWarning($"Categoria com Id = {id} não encontrada");
+                    return NotFound($"Categoria com Id = {id} não encontrada");
                 }
                 return Ok(categoria);
 
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
-            }
+  
            
         }
-        [HttpGet("produtos")]
-        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos()
-        {
-            try
-            {
-                return _context.Categorias.Include(p => p.Produtos).AsNoTracking().ToList(); //  AsNoTracking() é aplicada a informações de visualização para melhorar seu desempenho através do 
-                 //return _context.Categorias.Include(p => p.produtos).Where(c => c.CategoriaId <= 5).AsNoTracking().ToList();  Método correto para não sobrecarregar a aplicação
-            }
-            catch(Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
 
-            }
-        }
         [HttpPost]
         public ActionResult Post(Categoria categoria)
         {
-            try
-            {
-                if (categoria == null)
+            
+                if (categoria is  null)
                 {
-                    return BadRequest();
+                    _logger.LogWarning($"Dados Inválidos...");
+                    return BadRequest($"Dados Inválidos");
                 }
-                _context.Categorias.Add(categoria);
-                _context.SaveChanges();
-                return new CreatedAtRouteResult("ObterProduto", new { id = categoria.CategoriaId }, categoria);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
+                var categoriaCriada = _uof.CategoriaRepository.Create(categoria);
+            _uof.Commit();
+                return new CreatedAtRouteResult("ObterProduto", new { id = categoriaCriada.CategoriaId }, categoria);
 
-            }
         }
         [HttpPut("{id:int}")]
         public ActionResult Put(int id, Categoria categoria)
         {
-            try
+            if (id != categoria.CategoriaId)
             {
-                if (id != categoria.CategoriaId)
-                {
-                    return BadRequest();
-                }
-
-                _context.Entry(categoria).State = EntityState.Modified;
-                _context.SaveChanges();
-
-                return Ok(categoria);
+                _logger.LogWarning($"Dados Inválidos...");
+                return BadRequest($"Dados Inválidos...");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
-
-            }
+            _uof.CategoriaRepository.Update(categoria);
+            _uof.Commit();
+            return Ok(categoria);
         }
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
-            try
+            var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
+
+            if (categoria is null)
             {
-
-                var categoria = _context.Categorias.FirstOrDefault(p => (p.CategoriaId == id));
-                if (categoria is null)
-                {
-                    return NotFound();
-                }
-                _context.Categorias.Remove(categoria);
-                _context.SaveChanges();
-
-                return Ok(categoria);
+                _logger.LogWarning($"Categoria com id {id} não encontrada");
+                return BadRequest($"Categoria com id {id} não encontrada");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um problema ao tratar a sua solicitação");
-
-            }
+            var categoriaExcluida = _uof.CategoriaRepository.Delete(categoria);
+            _uof.Commit();
+            return Ok(categoriaExcluida);
         }
     }
 }

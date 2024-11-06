@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "D:\\C#\\Curso APIs\\ApiCatalogo\\APICatalogo\\APICatalogo.csproj": {}
+    "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj": {}
   },
   "projects": {
-    "D:\\C#\\Curso APIs\\ApiCatalogo\\APICatalogo\\APICatalogo.csproj": {
+    "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\C#\\Curso APIs\\ApiCatalogo\\APICatalogo\\APICatalogo.csproj",
+        "projectUniqueName": "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
         "projectName": "APICatalogo",
-        "projectPath": "D:\\C#\\Curso APIs\\ApiCatalogo\\APICatalogo\\APICatalogo.csproj",
+        "projectPath": "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
         "packagesPath": "C:\\Users\\leona\\.nuget\\packages\\",
         "outputPath": "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\obj\\",
         "projectStyle": "PackageReference",

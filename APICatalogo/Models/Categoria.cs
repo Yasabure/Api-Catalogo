@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace APICatalogo.Models;
 
@@ -17,6 +18,6 @@ public class Categoria
     [Required] // imagemUrl não pode ser nulo   
     [StringLength(300)] // ImagemUrl pode consumir no máximo 300 bits
     public string?  ImagemUrl { get; set; }
-
+    [JsonIgnore]
     public ICollection<Produto>? Produtos { get; set; } // Métodod para realizar a conexão no banco de dados entre Categoria e produtoi
 }

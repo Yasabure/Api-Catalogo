@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TK9L+aO+dqo=",
+  "dgSpecHash": "jNTv9rFdAEc=",
   "success": true,
-  "projectFilePath": "D:\\C#\\Curso APIs\\ApiCatalogo\\APICatalogo\\APICatalogo.csproj",
+  "projectFilePath": "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leona\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
