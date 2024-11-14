@@ -116,3 +116,4 @@ D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\System.Text.Encodings.
 D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\System.Text.Json.dll
 D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\C#\Curso APIs\APICatalogo\APICatalogo\obj\Debug\net8.0\APICatalogo.sourcelink.json
+D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\AutoMapper.dll

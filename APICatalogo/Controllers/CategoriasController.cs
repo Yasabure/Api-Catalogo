@@ -1,5 +1,6 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.DTOs;
+using APICatalogo.DTOs.Mappings;
 using APICatalogo.Models;
 using APICatalogo.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -29,17 +30,9 @@ namespace APICatalogo.Controllers
             if (categorias is null)
                 return NotFound("Não existem categorias");
 
-            var categoriasDTO = new List<CategoriaDTO>();
-            foreach (var categoria in categorias)
-            {
-                var categoriaDTO = new CategoriaDTO()
-                {
-                    CategoriaId = categoria.CategoriaId,
-                    Nome = categoria.Nome,
-                    ImagemUrl = categoria.ImagemUrl,
-                };
-            }
-            return Ok(categoriasDTO);
+            var categoriasDto = categorias.ToCategoriaDTOList();
+
+            return Ok(categoriasDto);
         }
 
         [HttpGet("{id:int}", Name = "ObterCategoria")]
@@ -51,14 +44,8 @@ namespace APICatalogo.Controllers
                     _logger.LogWarning($"Categoria com Id = {id} não encontrada");
                     return NotFound($"Categoria com Id = {id} não encontrada");
             }
-            var categoriaDTO = new CategoriaDTO()
-            {
-                CategoriaId = categoria.CategoriaId,
-                Nome = categoria.Nome,
-                ImagemUrl = categoria.ImagemUrl,
-
-            };
-                return Ok(categoriaDTO);
+            var categoriaDto = categoria.ToCategoriaDTO();
+                return Ok(categoriaDto);
         }
 
         [HttpPost]
@@ -70,22 +57,12 @@ namespace APICatalogo.Controllers
                     _logger.LogWarning($"Dados Inválidos...");
                     return BadRequest($"Dados Inválidos");
                 }
-            var categoria = new Categoria()
-            {
-                CategoriaId = categoriaDTO.CategoriaId,
-                Nome = categoriaDTO.Nome,
-                ImagemUrl = categoriaDTO.ImagemUrl
-            };
+            var categoria = categoriaDTO.ToCategoria();
           
                 var categoriaCriada = _uof.CategoriaRepository.Create(categoria);
                 _uof.Commit();
-            var novaCategoriaDTO = new CategoriaDTO()
-            {
-                CategoriaId = categoriaCriada.CategoriaId,
-                Nome = categoriaCriada.Nome,
-                ImagemUrl = categoriaCriada.ImagemUrl
-            };
-            return new CreatedAtRouteResult("ObterProduto", new { id = novaCategoriaDTO.CategoriaId }, novaCategoriaDTO);
+            var novaCategoriaDto = categoriaCriada.ToCategoriaDTO();
+            return new CreatedAtRouteResult("ObterProduto", new { id = novaCategoriaDto.CategoriaId }, novaCategoriaDto);
 
         }
         [HttpPut("{id:int}")]
@@ -96,21 +73,11 @@ namespace APICatalogo.Controllers
                 _logger.LogWarning($"Dados Inválidos...");
                 return BadRequest($"Dados Inválidos...");
             }
-            var categoria = new Categoria()
-            {
-                CategoriaId = categoriaDTO.CategoriaId,
-                Nome = categoriaDTO.Nome,
-                ImagemUrl = categoriaDTO.ImagemUrl
-            };
+            var categoria = categoriaDTO.ToCategoria();
 
             var categoriaAtualizada =_uof.CategoriaRepository.Update(categoria);
             _uof.Commit();
-            var categoriaAtualizadaDTO = new CategoriaDTO()
-            {
-                CategoriaId = categoriaAtualizada.CategoriaId,
-                Nome = categoriaAtualizada.Nome,
-                ImagemUrl = categoriaAtualizada.ImagemUrl
-            };
+            var categoriaAtualizadaDTO = categoriaAtualizada.ToCategoriaDTO();
             return Ok(categoriaAtualizadaDTO);
         }
         [HttpDelete("{id:int}")]
@@ -125,12 +92,7 @@ namespace APICatalogo.Controllers
             }
             var categoriaExcluida = _uof.CategoriaRepository.Delete(categoria);
             _uof.Commit();
-            var categoriaExcluidaDTO = new CategoriaDTO()
-            {
-                CategoriaId = categoriaExcluida.CategoriaId,
-                Nome = categoriaExcluida.Nome,
-                ImagemUrl = categoriaExcluida.ImagemUrl
-            };
+            var categoriaExcluidaDTO = categoria.ToCategoriaDTO();
             return Ok(categoriaExcluidaDTO);
         }
     }
