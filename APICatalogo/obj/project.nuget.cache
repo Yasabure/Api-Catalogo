@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jN1c8ZtoEIg=",
+  "dgSpecHash": "JRyUbtDxd7E=",
   "success": true,
   "projectFilePath": "D:\\C#\\Curso APIs\\APICatalogo\\APICatalogo\\APICatalogo.csproj",
   "expectedPackageFiles": [
@@ -33,6 +33,7 @@
     "C:\\Users\\leona\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\mono.texttemplating\\3.0.0-preview-0045-g9b6fc72764\\mono.texttemplating.3.0.0-preview-0045-g9b6fc72764.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\mysqlconnector\\2.3.5\\mysqlconnector.2.3.5.nupkg.sha512",
+    "C:\\Users\\leona\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\9.0.0-preview.1\\pomelo.entityframeworkcore.mysql.9.0.0-preview.1.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\swashbuckle.aspnetcore\\6.8.1\\swashbuckle.aspnetcore.6.8.1.nupkg.sha512",
     "C:\\Users\\leona\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.8.1\\swashbuckle.aspnetcore.swagger.6.8.1.nupkg.sha512",
