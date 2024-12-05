@@ -43,6 +43,26 @@ namespace APICatalogo.Controllers
 
             return Ok(categoriasDTO);
         }
+        [HttpGet("Filter/nome/pagination")]
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategoriasFilterNome([FromQuery] CategoriasFiltroNome categoriasFiltroNome)
+        {
+            var categorias = _uof.CategoriaRepository.GetCategoriasNome(categoriasFiltroNome);
+            var metadata = new
+            {
+                categorias.TotalCount,
+                categorias.PageSize,
+                categorias.CurrentPage,
+                categorias.TotalPages,
+                categorias.HasNext,
+                categorias.HasPrevious
+            };
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+            var categoriasDTO = categorias.ToCategoriaDTOList();
+
+
+            return Ok(categoriasDTO);
+
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<CategoriaDTO>> Get()

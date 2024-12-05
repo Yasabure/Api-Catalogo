@@ -57,6 +57,26 @@ namespace APICatalogo.Controllers
 
             return Ok(produtosDTO);
         }
+
+        [HttpGet("Filter/preco/pagination")]
+        public ActionResult<IEnumerable<ProdutoDTO>> GetProdutosFilterPreco([FromQuery] ProdutosFiltroPreco prodututosFilterParameters)
+        {
+            var produtos = _uof.ProdutoRepository.GetProdutosFiltroPreco(prodututosFilterParameters);
+            var metadata = new
+            {
+                produtos.TotalCount,
+                produtos.PageSize,
+                produtos.CurrentPage,
+                produtos.TotalPages,
+                produtos.HasNext,
+                produtos.HasPrevious
+            };
+            Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+            var produtosDTO = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+
+            return Ok(produtosDTO);
+
+        }
         [HttpGet]
         public ActionResult<IEnumerable<ProdutoDTO>> Get() // Posso retornar um enumerabel ou ActionResult
         {
