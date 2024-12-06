@@ -1,6 +1,7 @@
 ﻿using APICatalogo.Context;
 using APICatalogo.Models;
 using APICatalogo.Pagination;
+using X.PagedList;
 
 namespace APICatalogo.Repositories
 {
@@ -10,15 +11,15 @@ namespace APICatalogo.Repositories
         {
         }
 
-        public async Task<PagedList<Produto>> GetProdutosAsync(ProdutosParameters produtosParameters)
+        public async Task<IPagedList<Produto>> GetProdutosAsync(ProdutosParameters produtosParameters)
         {
             var produtos = await GetAllAsync();
             var produtosOrdenados = produtos.OrderBy(p => p.ProdutoId).AsQueryable();
-            var resultado = PagedList<Produto>.ToPagedList(produtosOrdenados,produtosParameters.PageNumber,produtosParameters.PageSize);
+            var resultado = await produtosOrdenados.ToPagedListAsync(produtosParameters.PageNumber,produtosParameters.PageSize);
             return resultado;
         }
 
-        public async  Task<PagedList<Produto>> GetProdutosFiltroPrecoAsync(ProdutosFiltroPreco produtosFiltroParameters)
+        public async  Task<IPagedList<Produto>> GetProdutosFiltroPrecoAsync(ProdutosFiltroPreco produtosFiltroParameters)
         {
             var produtos = await GetAllAsync();
             if(produtosFiltroParameters.Preco.HasValue && !string.IsNullOrEmpty(produtosFiltroParameters.PrecoCriteiro))
@@ -30,7 +31,7 @@ namespace APICatalogo.Repositories
                 else if (produtosFiltroParameters.PrecoCriteiro.Equals("igual", StringComparison.OrdinalIgnoreCase))
                     produtos = produtos.Where(p => p.Preco == produtosFiltroParameters.Preco.Value).OrderBy(p => p.Preco);
             }
-            var produtosFiltrados = PagedList<Produto>.ToPagedList(produtos.AsQueryable(), produtosFiltroParameters.PageNumber, produtosFiltroParameters.PageSize);
+            var produtosFiltrados = await produtos.ToPagedListAsync(produtosFiltroParameters.PageNumber, produtosFiltroParameters.PageSize);
             return produtosFiltrados;
         }
 

@@ -2,6 +2,7 @@
 using APICatalogo.Models;
 using APICatalogo.Pagination;
 using Microsoft.AspNetCore.Http.HttpResults;
+using X.PagedList;
 
 namespace APICatalogo.Repositories
 {
@@ -9,21 +10,21 @@ namespace APICatalogo.Repositories
     {
         public CategoriaRepository(AppDbContext context) : base(context)
         { }
-        public async Task<PagedList<Categoria>> GetCategoriasAsync(CategoriasParameters categoriasParameters)
+        public async Task<IPagedList<Categoria>> GetCategoriasAsync(CategoriasParameters categoriasParameters)
         {
             var categorias = await GetAllAsync();
             var categoriasOrdenadas = categorias.OrderBy(p => p.CategoriaId).AsQueryable();
-            var resultado = PagedList<Categoria>.ToPagedList(categoriasOrdenadas, categoriasParameters.PageNumber, categoriasParameters.PageSize);
+            var resultado = await categoriasOrdenadas.ToPagedListAsync(categoriasParameters.PageNumber, categoriasParameters.PageSize);
             return resultado;
         }
 
-        public async Task<PagedList<Categoria>> GetCategoriasNomeAsync(CategoriasFiltroNome categoriasParameters)
+        public async Task<IPagedList<Categoria>> GetCategoriasNomeAsync(CategoriasFiltroNome categoriasParameters)
         {
             var categorias = await GetAllAsync();
             if (!string.IsNullOrEmpty(categoriasParameters.Nome))
                 categorias = categorias.Where(p => p.Nome.Contains(categoriasParameters.Nome));
 
-            var categoriasFiltradas = PagedList<Categoria>.ToPagedList(categorias.AsQueryable(), categoriasParameters.PageNumber, categoriasParameters.PageSize);
+            var categoriasFiltradas = await categorias.ToPagedListAsync(categoriasParameters.PageNumber, categoriasParameters.PageSize);
             return categoriasFiltradas;
 
         }

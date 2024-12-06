@@ -118,3 +118,6 @@ D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\runtimes\browser\lib\n
 D:\C#\Curso APIs\APICatalogo\APICatalogo\obj\Debug\net8.0\APICatalogo.sourcelink.json
 D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\AutoMapper.dll
 D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\JetBrains.Annotations.dll
+D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\X.PagedList.dll
+D:\C#\Curso APIs\APICatalogo\APICatalogo\bin\Debug\net8.0\X.PagedList.Mvc.Core.dll
